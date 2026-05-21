@@ -1,0 +1,78 @@
+<div class="body-content">
+  <div class="grid grid-nogutter">
+    <div class="col-12">
+        <h1 class="m-2">Formulário de Exame Antropométrico</h1>         
+    </div>
+  </div>
+
+  <form (ngSubmit)="save()" #examForm="ngForm">
+    <div class="grid mt-3">
+      <div class="col-4">
+          <p-floatlabel>
+            <label for="name">Nome</label>
+            <input pInputText id="name" name="name" [(ngModel)]="exam.name" [ngModelOptions]="{standalone: true}" required fluid />
+          </p-floatlabel>          
+      </div>
+    </div>
+    <div class="grid mt-3">
+      <div class="col-4">
+          <p-floatlabel>
+            <label for="email">Email</label>
+            <input pInputText id="email" name="email" [(ngModel)]="exam.email" [ngModelOptions]="{standalone: true}" required type="email" fluid  />
+          </p-floatlabel>          
+      </div>
+    </div>
+    <div class="grid mt-3">
+      <div class="col-4">
+          <p-floatlabel>
+            <label for="phone">Telefone</label>
+            <input pInputText id="phone" name="phone" [(ngModel)]="exam.phone" [ngModelOptions]="{standalone: true}" required fluid />
+          </p-floatlabel>          
+      </div>
+    </div>
+    <div class="grid mt-1">
+      <div class="col-4">
+        <label for="birthday"> Data de Nascimento </label>
+        <p-datePicker id="birthday" [(ngModel)]="exam.birthday"
+        [ngModelOptions]="{standalone: true}" 
+        dateFormat="dd/mm/yy" 
+        placeholder="dd/mm/yyyy" 
+        pInputMask="99/99/9999" fluid />
+      </div>
+    </div>
+    <div class="grid mt-3">
+      <div class="col-4">
+          <p-floatlabel>
+            <label for="weight">Peso (kg)</label>
+            <input pInputText id="weight" name="weight" [(ngModel)]="exam.weight" required fluid />
+          </p-floatlabel>          
+      </div>
+    </div>
+    <div class="grid mt-3">
+      <div class="col-4">
+          <p-floatlabel>
+            <label for="height">Altura (cm)</label>
+            <input pInputText id="height" name="height" [(ngModel)]="exam.height" [ngModelOptions]="{standalone: true}" required fluid />
+          </p-floatlabel>          
+      </div>
+    </div>
+    <div class="grid mt-3">
+      <div class="col-4">
+          <p-floatlabel>
+            <label for="circum_abs_rips">Circ. Abdômen/Quadril (cm)</label>
+            <input pInputText id="circum_abs_rips" name="circum_abs_rips" [(ngModel)]="exam.circum_abs_rips" [ngModelOptions]="{standalone: true}" required fluid />
+          </p-floatlabel>          
+      </div>
+    </div>
+    <div class="grid mt-3">
+      <div class="col-4">
+          <p-floatlabel>
+            <label for="circum_rips_thigh">Circunf. Quadril/Coxa (cm)</label>
+            <input pInputText id="circum_rips_thigh" name="circum_rips_thigh" [(ngModel)]="exam.circum_rips_thigh" [ngModelOptions]="{standalone: true}" required fluid />
+          </p-floatlabel>          
+      </div>
+    </div>
+
+    <button pButton type="submit" label="Gravar" class="p-mt-3 mt-3"></button>
+  </form>
+</div>

@@ -1,0 +1,38 @@
+/* Container principal cobrindo toda a tela */
+.app-container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+/* Barra lateral */
+.left-bar {
+  width: 250px;
+  background-color: #f4f4f4;
+  border-right: 1px solid #ddd;
+  padding: 20px;
+  transition: width 0.3s ease; /* Animação suave */
+}
+
+/* Conteúdo principal ocupando o resto do espaço */
+.body-content {
+  flex: 1;
+  background-color: #ffffff;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+/* Responsividade: Para celulares e telas menores */
+@media (max-width: 768px) {
+  .app-container {
+    flex-direction: column; /* Muda o layout de lado para cima/baixo */
+  }
+
+  .left-bar {
+    width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid #ddd;
+  }
+}
