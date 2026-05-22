@@ -5,6 +5,8 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { ButtonModule } from 'primeng/button';
 import { DatePickerModule } from 'primeng/datepicker';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 @Component({
   selector: 'app-body-content',
@@ -29,5 +31,41 @@ export class BodyContentComponent {
   save() {
     // lógica para gravar
     console.log('Gravar', this.exam);
+  }
+
+  generatePdf() {
+    const doc = new jsPDF();
+    doc.setFontSize(16);
+    doc.text('Exame Antropométrico', 14, 20);
+
+    const rows = Object.entries(this.exam).map(([field, value]) => [
+      this.getLabel(field),
+      value ?? ''
+    ]);
+
+    autoTable(doc, {
+      startY: 30,
+      head: [['Campo', 'Valor']],
+      body: rows,
+      styles: { fontSize: 10 },
+      headStyles: { fillColor: [41, 128, 185], textColor: 255 }
+    });
+
+    doc.save('exame-antropometrico.pdf');
+  }
+
+  private getLabel(field: string) {
+    const labels: Record<string, string> = {
+      id: 'ID',
+      name: 'Nome',
+      email: 'Email',
+      phone: 'Telefone',
+      birthday: 'Data de Nascimento',
+      weight: 'Peso (kg)',
+      height: 'Altura (cm)',
+      circum_abs_rips: 'Circ. Abdômen/Quadril (cm)',
+      circum_rips_thigh: 'Circunf. Quadril/Coxa (cm)'
+    };
+    return labels[field] ?? field;
   }
 }
