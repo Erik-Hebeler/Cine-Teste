@@ -33,7 +33,12 @@ export class BodyContentComponent {
     console.log('Gravar', this.exam);
   }
 
-  generatePdf() {
+  async saveAndShare() {
+    this.save();
+    await this.sharePdf();
+  }
+
+  private buildPdfDocument() {
     const doc = new jsPDF();
     doc.setFontSize(16);
     doc.text('Exame Antropométrico', 14, 20);
@@ -51,7 +56,60 @@ export class BodyContentComponent {
       headStyles: { fillColor: [41, 128, 185], textColor: 255 }
     });
 
+    return doc;
+  }
+
+  generatePdf() {
+    const doc = this.buildPdfDocument();
     doc.save('exame-antropometrico.pdf');
+  }
+
+  private createPdfFile() {
+    const doc = this.buildPdfDocument();
+    const blob = doc.output('blob');
+    return new File([blob], 'exame-antropometrico.pdf', { type: 'application/pdf' });
+  }
+
+  async sharePdf() {
+    const file = this.createPdfFile();
+    const message = `Exame Antropométrico de ${this.exam.name || 'Paciente'}\nTelefone: ${this.exam.phone || ''}`;
+
+    if (navigator.canShare?.({ files: [file] })) {
+      try {
+        await navigator.share({
+          title: 'Exame Antropométrico',
+          text: message,
+          files: [file]
+        });
+        return;
+      } catch (error) {
+        console.error('Erro ao compartilhar:', error);
+      }
+    }
+
+    const phone = this.formatPhoneForWhatsApp(this.exam.phone);
+    if (phone) {
+      const url = `https://wa.me/${phone}?text=${encodeURIComponent(
+        'Estou enviando o PDF do exame. Por favor, anexe o arquivo manualmente.'
+      )}`;
+      window.open(url, '_blank');
+      return;
+    }
+
+    window.alert(
+      'Não foi possível compartilhar o PDF diretamente. Você pode gerar o PDF e enviar manualmente pelo WhatsApp.'
+    );
+  }
+
+  private formatPhoneForWhatsApp(phone: string) {
+    if (!phone) {
+      return null;
+    }
+    const digits = phone.replace(/\D/g, '');
+    if (!digits) {
+      return null;
+    }
+    return digits.startsWith('0') ? digits.replace(/^0+/, '') : digits;
   }
 
   private getLabel(field: string) {
